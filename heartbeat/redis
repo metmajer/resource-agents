@@ -193,6 +193,12 @@ read_ms_status() {
         return $OCF_ERR_GENERIC;
     fi
 
+    if ! ocf_is_ms; then
+        ocf_log info "$REDIS_SERVER_NAME is running (standalone)";
+        rm -f $tmp
+        return $OCF_SUCCESS;
+    fi
+
     grep -e "role:slave" $tmp >/dev/null 2>&1
     has_slave_role=$?
 
